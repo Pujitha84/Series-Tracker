@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Little Watch Diary 🌙</title>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+
+        <div>
+            <h1>🎬 My Series Diary</h1>
+
+            <p>
+                stories i've watched, loved & left for another night ☾
+            </p>
+        </div>
+
+        <button onclick="openForm()">
+            ＋ Add Series
+        </button>
+
+    </header>
+
+
+    <!-- STATISTICS -->
+    <div class="stats">
+
+        <div class="stat">
+            <span>📺</span>
+            <h2>{{ series|length }}</h2>
+            <p>Little Stories</p>
+        </div>
+
+        <div class="stat">
+            <span>🌙</span>
+            <h2>{{ completed }}</h2>
+            <p>Finished</p>
+        </div>
+
+        <div class="stat">
+            <span>✨</span>
+            <h2>{{ ongoing }}</h2>
+            <p>Currently Watching</p>
+        </div>
+
+        <div class="stat">
+            <span>🍿</span>
+            <h2>{{ yet_to_start }}</h2>
+            <p>Waiting for Me</p>
+        </div>
+
+    </div>
+
+
+    <!-- ADD FORM -->
+    <div id="formBox" class="form-box">
+
+        <h2>✦ Add a little story</h2>
+
+        <form action="/add" method="POST">
+
+            <input
+                type="text"
+                name="title"
+                placeholder="What are we watching tonight?"
+                required
+            >
+
+            <input
+                type="text"
+                name="genre"
+                placeholder="Genre • Anime • Thriller • Romance..."
+            >
+
+            <select name="status">
+                <option>Yet to Start</option>
+                <option>Ongoing</option>
+                <option>Completed</option>
+            </select>
+
+            <input
+                type="number"
+                name="rating"
+                placeholder="Your rating • 0 to 10"
+                min="0"
+                max="10"
+                step="0.1"
+            >
+
+            <div class="episode-row">
+
+                <input
+                    type="number"
+                    name="episodes"
+                    placeholder="Episodes watched"
+                    min="0"
+                >
+
+                <input
+                    type="number"
+                    name="total_episodes"
+                    placeholder="Total episodes (optional)"
+                    min="0"
+                >
+
+            </div>
+
+            <small class="episode-help">
+                💡 Don't know the total episodes yet? Leave it blank.
+            </small>
+
+            <button type="submit">
+                Save to my diary ✦
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- SERIES SECTION -->
+    <section>
+
+        <h2 class="section-title">
+            My little watchlist ☾
+        </h2>
+
+
+        {% if series %}
+
+        <div class="grid">
+
+            {% for s in series %}
+
+            <div class="card">
+
+                <!-- CARD TOP -->
+                <div class="card-top">
+
+                    <h2>
+                        {{ s["title"] }}
+                    </h2>
+
+
+                    {% if s["status"] == "Completed" %}
+
+                        <span class="badge completed">
+                            ✓ Finished
+                        </span>
+
+                    {% elif s["status"] == "Ongoing" %}
+
+                        <span class="badge ongoing">
+                            ✦ Watching
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge waiting">
+                            ☾ Someday
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- GENRE -->
+                <p class="genre">
+
+                    {{ s["genre"] or "A story waiting to be discovered" }}
+
+                </p>
+
+
+                <!-- DETAILS -->
+                <div class="details">
+
+                    <span>
+                        ⭐ {{ s["rating"] }}/10
+                    </span>
+
+
+                    {% if s["total_episodes"] and s["total_episodes"] > 0 %}
+
+                        <span>
+                            🎞️
+                            {{ s["episodes"] }}
+                            /
+                            {{ s["total_episodes"] }}
+                        </span>
+
+                    {% else %}
+
+                        <span>
+                            🎞️
+                            {{ s["episodes"] }}
+                            watched
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PROGRESS BAR -->
+                {% if s["total_episodes"] and s["total_episodes"] > 0 %}
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            data-watched="{{ s['episodes'] }}"
+                            data-total="{{ s['total_episodes'] }}"
+                        ></div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- ACTION BUTTONS -->
+                <div class="card-actions">
+
+                    <button
+                        type="button"
+                        class="edit-btn"
+                        data-id="{{ s['id'] }}"
+                    >
+                        ✏️ Edit
+                    </button>
+
+
+                    <a
+                        class="delete"
+                        href="/delete/{{ s['id'] }}"
+                        onclick="return confirm('Remove this story from your diary?')"
+                    >
+                        🗑 Remove
+                    </a>
+
+                </div>
+
+
+                <!-- EDIT FORM -->
+                <div
+                    id="editForm{{ s['id'] }}"
+                    class="edit-form"
+                >
+
+                    <h3>
+                        ✦ Edit this story
+                    </h3>
+
+
+                    <form
+                        action="/edit/{{ s['id'] }}"
+                        method="POST"
+                    >
+
+                        <input
+                            type="text"
+                            name="title"
+                            value="{{ s['title'] }}"
+                            placeholder="Series title"
+                            required
+                        >
+
+
+                        <input
+                            type="text"
+                            name="genre"
+                            value="{{ s['genre'] or '' }}"
+                            placeholder="Genre"
+                        >
+
+
+                        <select name="status">
+
+                            <option
+                                value="Yet to Start"
+                                {% if s["status"] == "Yet to Start" %}
+                                selected
+                                {% endif %}
+                            >
+                                Yet to Start
+                            </option>
+
+                            <option
+                                value="Ongoing"
+                                {% if s["status"] == "Ongoing" %}
+                                selected
+                                {% endif %}
+                            >
+                                Ongoing
+                            </option>
+
+                            <option
+                                value="Completed"
+                                {% if s["status"] == "Completed" %}
+                                selected
+                                {% endif %}
+                            >
+                                Completed
+                            </option>
+
+                        </select>
+
+
+                        <input
+                            type="number"
+                            name="rating"
+                            value="{{ s['rating'] }}"
+                            placeholder="Rating"
+                            min="0"
+                            max="10"
+                            step="0.1"
+                        >
+
+
+                        <div class="episode-row">
+
+                            <input
+                                type="number"
+                                name="episodes"
+                                value="{{ s['episodes'] }}"
+                                placeholder="Episodes watched"
+                                min="0"
+                            >
+
+                            <input
+                                type="number"
+                                name="total_episodes"
+                                value="{% if s['total_episodes'] > 0 %}{{ s['total_episodes'] }}{% endif %}"
+                                placeholder="Total episodes (optional)"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                        <div class="edit-actions">
+
+                            <button type="submit">
+                                Save Changes ✦
+                            </button>
+
+                            <button
+                                type="button"
+                                class="cancel-btn"
+                                data-cancel-id="{{ s['id'] }}"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            <div>🍿</div>
+
+            <h2>
+                Nothing here yet...
+            </h2>
+
+            <p>
+                Every good watchlist has a first story. ✦
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

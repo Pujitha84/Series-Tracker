@@ -1,0 +1,848 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+
+/* ===============================
+   BASIC RESET
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family: "DM Sans", sans-serif;
+
+    color: #eee8ff;
+
+    background:
+        radial-gradient(circle at 15% 20%, rgba(141, 112, 205, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 75%, rgba(104, 83, 165, 0.15), transparent 30%),
+        linear-gradient(135deg, #090812, #121024 45%, #0b0915);
+
+    position: relative;
+    overflow-x: hidden;
+}
+
+
+/* ===============================
+   STAR BACKGROUND
+================================ */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.55;
+
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px);
+
+    background-size: 110px 110px, 170px 170px;
+
+    background-position: 20px 30px, 80px 90px;
+}
+
+
+/* ===============================
+   MAIN CONTAINER
+================================ */
+
+.container {
+    width: min(1150px, 92%);
+
+    margin: 0 auto;
+
+    padding: 55px 0 80px;
+}
+
+
+/* ===============================
+   HEADER
+================================ */
+
+header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 25px;
+
+    margin-bottom: 45px;
+}
+
+
+header h1 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(2.5rem, 5vw, 4.3rem);
+
+    font-weight: 700;
+
+    letter-spacing: -1px;
+
+    color: #f3edff;
+
+    text-shadow: 0 0 30px rgba(190, 164, 255, 0.25);
+}
+
+
+header p {
+    margin-top: 7px;
+
+    font-size: 0.95rem;
+
+    color: #aaa0c5;
+
+    font-style: italic;
+}
+
+
+/* ===============================
+   GENERAL BUTTON
+================================ */
+
+button {
+    border: none;
+
+    font-family: "DM Sans", sans-serif;
+
+    cursor: pointer;
+}
+
+
+header button {
+    padding: 13px 21px;
+
+    border-radius: 14px;
+
+    color: #17111f;
+
+    background: linear-gradient(
+        135deg,
+        #ddd0ff,
+        #bca6f4
+    );
+
+    font-weight: 600;
+
+    box-shadow:
+        0 8px 25px rgba(148, 115, 216, 0.25);
+
+    transition: 0.25s ease;
+}
+
+
+header button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 32px rgba(148, 115, 216, 0.38);
+}
+
+
+/* ===============================
+   STATISTICS
+================================ */
+
+.stats {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 50px;
+}
+
+
+.stat {
+    padding: 23px 20px;
+
+    border: 1px solid rgba(210, 194, 255, 0.12);
+
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.18);
+
+    transition: 0.3s ease;
+}
+
+
+.stat:hover {
+    transform: translateY(-5px);
+
+    border-color: rgba(210, 194, 255, 0.23);
+}
+
+
+.stat span {
+    font-size: 1.35rem;
+}
+
+
+.stat h2 {
+    margin-top: 7px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 2rem;
+
+    color: #eee5ff;
+}
+
+
+.stat p {
+    margin-top: 2px;
+
+    color: #9e96b5;
+
+    font-size: 0.82rem;
+}
+
+
+/* ===============================
+   ADD FORM
+================================ */
+
+.form-box {
+    display: none;
+
+    max-width: 650px;
+
+    margin: 0 auto 50px;
+
+    padding: 30px;
+
+    border: 1px solid rgba(211, 193, 255, 0.15);
+
+    border-radius: 26px;
+
+    background: rgba(22, 18, 38, 0.78);
+
+    backdrop-filter: blur(20px);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35);
+}
+
+
+.form-box h2,
+.edit-form h3 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 1.9rem;
+
+    color: #eee5ff;
+
+    margin-bottom: 20px;
+}
+
+
+form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+
+input,
+select {
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border: 1px solid rgba(214, 197, 255, 0.12);
+
+    border-radius: 13px;
+
+    outline: none;
+
+    color: #eee8ff;
+
+    background: rgba(255, 255, 255, 0.055);
+
+    font-family: "DM Sans", sans-serif;
+
+    transition: 0.2s ease;
+}
+
+
+input::placeholder {
+    color: #817993;
+}
+
+
+input:focus,
+select:focus {
+    border-color: rgba(201, 177, 255, 0.5);
+
+    background: rgba(255, 255, 255, 0.075);
+
+    box-shadow:
+        0 0 0 3px rgba(183, 153, 245, 0.08);
+}
+
+
+select option {
+    background: #171326;
+
+    color: #eee8ff;
+}
+
+
+.episode-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 13px;
+}
+
+
+.episode-help {
+    margin-top: -5px;
+
+    color: #9289a8;
+
+    font-size: 0.75rem;
+}
+
+
+.form-box form > button {
+    margin-top: 8px;
+
+    padding: 13px;
+
+    border-radius: 13px;
+
+    color: #17111f;
+
+    background: linear-gradient(
+        135deg,
+        #ddd0ff,
+        #bca6f4
+    );
+
+    font-weight: 600;
+
+    transition: 0.25s ease;
+}
+
+
+.form-box form > button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ===============================
+   SECTION
+================================ */
+
+section {
+    margin-top: 20px;
+}
+
+
+.section-title {
+    margin-bottom: 25px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 2.2rem;
+
+    color: #e9e0fa;
+}
+
+
+/* ===============================
+   SERIES GRID
+================================ */
+
+.grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 22px;
+}
+
+
+/* ===============================
+   SERIES CARD
+================================ */
+
+.card {
+    position: relative;
+
+    padding: 23px;
+
+    border: 1px solid rgba(214, 196, 255, 0.1);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.07),
+            rgba(255,255,255,0.025)
+        );
+
+    backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease;
+}
+
+
+.card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+
+    height: 130px;
+
+    top: -70px;
+
+    right: -50px;
+
+    border-radius: 50%;
+
+    background: rgba(191, 165, 255, 0.08);
+
+    filter: blur(5px);
+
+    pointer-events: none;
+}
+
+
+.card:hover {
+    transform: translateY(-6px);
+
+    border-color: rgba(211, 193, 255, 0.22);
+}
+
+
+/* ===============================
+   CARD TOP
+================================ */
+
+.card-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 10px;
+}
+
+
+.card-top h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 1.65rem;
+
+    line-height: 1.05;
+
+    color: #f0e9ff;
+}
+
+
+/* ===============================
+   BADGES
+================================ */
+
+.badge {
+    flex-shrink: 0;
+
+    padding: 6px 9px;
+
+    border-radius: 30px;
+
+    font-size: 0.68rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.2px;
+}
+
+
+.badge.completed {
+    color: #d9f4df;
+
+    background: rgba(113, 173, 132, 0.16);
+
+    border: 1px solid rgba(135, 204, 155, 0.15);
+}
+
+
+.badge.ongoing {
+    color: #e4d7ff;
+
+    background: rgba(163, 132, 225, 0.18);
+
+    border: 1px solid rgba(190, 159, 249, 0.16);
+}
+
+
+.badge.waiting {
+    color: #c9c1d8;
+
+    background: rgba(160, 151, 180, 0.12);
+
+    border: 1px solid rgba(190, 180, 210, 0.1);
+}
+
+
+/* ===============================
+   GENRE
+================================ */
+
+.genre {
+    margin-top: 13px;
+
+    min-height: 22px;
+
+    color: #9890aa;
+
+    font-size: 0.82rem;
+
+    line-height: 1.5;
+}
+
+
+/* ===============================
+   DETAILS
+================================ */
+
+.details {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+    color: #c3bad3;
+
+    font-size: 0.78rem;
+}
+
+
+/* ===============================
+   PROGRESS
+================================ */
+
+.progress {
+    width: 100%;
+
+    height: 6px;
+
+    margin-top: 15px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.08);
+}
+
+
+.progress-bar {
+    height: 100%;
+
+    width: 0;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        90deg,
+        #9c83d5,
+        #d0baff
+    );
+
+    transition: width 0.8s ease;
+}
+
+
+/* ===============================
+   CARD ACTIONS
+================================ */
+
+.card-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 19px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+
+.edit-btn {
+    padding: 8px 13px;
+
+    border-radius: 10px;
+
+    color: #d8cced;
+
+    background: rgba(183, 157, 235, 0.11);
+
+    border: 1px solid rgba(196, 173, 242, 0.12);
+
+    font-size: 0.75rem;
+
+    transition: 0.2s ease;
+}
+
+
+.edit-btn:hover {
+    background: rgba(183, 157, 235, 0.2);
+
+    transform: translateY(-1px);
+}
+
+
+.delete {
+    color: #91899e;
+
+    text-decoration: none;
+
+    font-size: 0.72rem;
+
+    transition: 0.2s ease;
+}
+
+
+.delete:hover {
+    color: #d9a9bd;
+}
+
+
+/* ===============================
+   EDIT FORM
+================================ */
+
+.edit-form {
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 19px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(203, 181, 247, 0.12);
+
+    background: rgba(8, 7, 17, 0.38);
+}
+
+
+.edit-form h3 {
+    font-size: 1.45rem;
+
+    margin-bottom: 15px;
+}
+
+
+.edit-form input,
+.edit-form select {
+    padding: 11px 12px;
+
+    font-size: 0.8rem;
+}
+
+
+.edit-actions {
+    display: flex;
+
+    gap: 9px;
+
+    margin-top: 4px;
+}
+
+
+.edit-actions button {
+    flex: 1;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    font-size: 0.76rem;
+
+    font-weight: 600;
+}
+
+
+.edit-actions button[type="submit"] {
+    color: #17111f;
+
+    background: linear-gradient(
+        135deg,
+        #ddd0ff,
+        #bca6f4
+    );
+}
+
+
+.cancel-btn {
+    color: #c0b6cd;
+
+    background: rgba(255,255,255,0.06);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    transition: 0.2s ease;
+}
+
+
+.cancel-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+
+/* ===============================
+   EMPTY STATE
+================================ */
+
+.empty {
+    text-align: center;
+
+    padding: 75px 20px;
+
+    border: 1px dashed rgba(211, 193, 255, 0.14);
+
+    border-radius: 25px;
+
+    background: rgba(255,255,255,0.025);
+}
+
+
+.empty > div {
+    font-size: 2.7rem;
+
+    margin-bottom: 10px;
+}
+
+
+.empty h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 2rem;
+
+    color: #e6def4;
+}
+
+
+.empty p {
+    margin-top: 5px;
+
+    color: #8f879d;
+
+    font-size: 0.85rem;
+}
+
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media (max-width: 900px) {
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .container {
+        width: 90%;
+
+        padding-top: 35px;
+    }
+
+
+    header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    header button {
+        width: 100%;
+    }
+
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .episode-row {
+        grid-template-columns: 1fr;
+    }
+
+
+    .stats {
+        gap: 12px;
+    }
+
+
+    .stat {
+        padding: 18px 15px;
+    }
+
+
+    .card-top {
+        flex-direction: column;
+    }
+
+
+    .card-actions {
+        flex-wrap: wrap;
+    }
+
+}
