@@ -10,8 +10,26 @@ create_table()
 @app.route("/")
 def home():
     conn = get_db()
-    series = conn.execute("SELECT * FROM series ORDER BY id DESC").fetchall()
+
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT * FROM series ORDER BY id DESC")
+        rows = cursor.fetchall()
+
     conn.close()
+
+    # Convert PostgreSQL tuples into dictionaries
+    series = [
+        {
+            "id": row[0],
+            "title": row[1],
+            "genre": row[2],
+            "status": row[3],
+            "rating": row[4],
+            "episodes": row[5],
+            "total_episodes": row[6]
+        }
+        for row in rows
+    ]
 
     completed = sum(1 for s in series if s["status"] == "Completed")
     ongoing = sum(1 for s in series if s["status"] == "Ongoing")
@@ -37,11 +55,19 @@ def add_series():
 
     conn = get_db()
 
-    conn.execute("""
-        INSERT INTO series
-        (title, genre, status, rating, episodes, total_episodes)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (title, genre, status, rating, episodes, total_episodes))
+    with conn.cursor() as cursor:
+        cursor.execute("""
+            INSERT INTO series
+            (title, genre, status, rating, episodes, total_episodes)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (
+            title,
+            genre,
+            status,
+            rating,
+            episodes,
+            total_episodes
+        ))
 
     conn.commit()
     conn.close()
@@ -60,24 +86,25 @@ def edit_series(id):
 
     conn = get_db()
 
-    conn.execute("""
-        UPDATE series
-        SET title = ?,
-            genre = ?,
-            status = ?,
-            rating = ?,
-            episodes = ?,
-            total_episodes = ?
-        WHERE id = ?
-    """, (
-        title,
-        genre,
-        status,
-        rating,
-        episodes,
-        total_episodes,
-        id
-    ))
+    with conn.cursor() as cursor:
+        cursor.execute("""
+            UPDATE series
+            SET title = %s,
+                genre = %s,
+                status = %s,
+                rating = %s,
+                episodes = %s,
+                total_episodes = %s
+            WHERE id = %s
+        """, (
+            title,
+            genre,
+            status,
+            rating,
+            episodes,
+            total_episodes,
+            id
+        ))
 
     conn.commit()
     conn.close()
@@ -88,7 +115,13 @@ def edit_series(id):
 @app.route("/delete/<int:id>")
 def delete_series(id):
     conn = get_db()
-    conn.execute("DELETE FROM series WHERE id = ?", (id,))
+
+    with conn.cursor() as cursor:
+        cursor.execute(
+            "DELETE FROM series WHERE id = %s",
+            (id,)
+        )
+
     conn.commit()
     conn.close()
 
